@@ -38,3 +38,29 @@ sleep 5s
 
 echo "FINISHED SECOND"
 
+echo "creating wordpress folder"
+#mkdir /var/www/wordpress
+
+wp --path=/var/www/html/wordpress
+
+echo "make wp-config.php"
+wp core config --dbname="wordpress" --dbuser="wordpressuser" --dbpass="password" --path="/var/www/html/wordpress"
+wp core install --url="http://localhost/wordpress" --title="Docker Wordpress" --admin_user="miloud" --admin_password="annaba" --admin_email="miloud.saihia@gmail.com" --path="/var/www/html/wordpress"
+#wp core config --dbname=wordpress --dbuser=root --dbpass=root && currentdirectory=${PWD##*/} && password="Annaba00" && wp db create
+
+echo "make install"
+#wp core install --url="http://localhost/wordpress" --title="Docker Wordpress" --admin_user="miloud" --admin_password="annaba" --admin_email="miloud.saihia@gmail.com"
+
+#cd /var/www/wordpress
+#wp core download
+#wget -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar 
+#chmod +x wp-cli.phar
+#mv wp-cli.phar /usr/local/bin/wp
+# | bash
+#wp core download /var/www/wordpress
+#wp core config --dbname=wordpress --dbuser=wordpressuser --dbpass=password
+#currentdirectory=${PWD##*/}
+#password="annaba"
+#wp db create
+#wp core instal --url="http://loclalhost/wordpress" --title="Docker Wordpress" --admin_user="miloud" --admin_password="annaba" --admin_email="miloud.saihia@gmail.com"
+#echo "END WORDPRESS INSTALL"

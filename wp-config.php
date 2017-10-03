@@ -1,4 +1,4 @@
-se configuration for WordPress
+
  *
  * The wp-config.php creation script uses this file during the
  * installation. You don't have to use the web site, you can
