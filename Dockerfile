@@ -1,34 +1,28 @@
-FROM centos:latest
-MAINTAINER SAIHIA
-LABEL Vendor="CentOS" \
-      License=GPLv2 \
-Version=2.4.6-40
+FROM centos/systemd
 
-ENV MYSQL_ROOT_PASSWORD zboub
+MAINTAINER "Your Name" <you@example.com>
 
-USER root
-RUN yum -y --setopt=tsflags=nodocs update && \
-    yum -y --setopt=tsflags=nodocs install httpd mariadb mariadb-server php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt php-xmlrpc unzip wget && \
-    yum clean all  
+RUN yum -y install httpd; yum clean all; systemctl enable httpd.service
+RUN yum -y install mariadb mariadb-server php php-common php-mysql php-gd php-xml php-mbstring php-mcrypt php-xmlrpc unzip wget && \
+    yum clean all
+RUN systemctl enable mariadb.service
+RUN cd /var/www/html && wget http://wordpress.org/latest.tar.gz && tar xzvf latest.tar.gz
+#RUN systemctl enable mysqld.service
+RUN cd /var/www/html/wordpress && cp wp-config-sample.php wp-config.php
+RUN sed -i 's@wordpress@wordpress@' /var/www/html/wordpress/wp-config.php && \
+    sed -i 's@wordpressuser@wordpress@' /var/www/html/wordpress/wp-config.php && \
+    sed -i 's@password@password@' /var/www/html/wordpress/wp-config.php && \
+    curl https://api.wordpress.org/secret-key/1.1/salt/ >> wp-config.php
 
-ADD mariadb.sql mariadb.sql
-ADD server.cnf /dockerEngine/wordpress/server.cnf
-ADD mariadb.sh /dockerEngine/wordpress/mariadb.sh
+ADD mariadb.sql /root
+ADD mariadb2.sql /root
+ADD server.cnf /root
+ADD mariadb.sh /root
+#ADD wp-config.php /var/www/wordpress
+
+RUN /root/mariadb.sh
 
 EXPOSE 80
-
-CMD ["systemctl start httpd"]
-CMD ["systemctl start mariadb"]
-CMD ["systemctl enable httpd"]
-CMD ["systemctl enable mariadb"]
-CMD ["systemctl start mysqld"] 
-
-#RUN ["/usr/bin/mysql_install_db --datadir="/var/lib/mysql" --user=mysql"]
-#RUN ["/usr/bin/mysqld_safe --datadir="/var/lib/mysql" --socket="/var/lib/mysql/mysql.sock" --user=mysql  >/dev/null 2>&1 &"]
-#RUN ["/usr/bin/mysqladmin -u root password zboub"]
-CMD ["tail -f /var/log/mariadb/mariadb.log"]
-
-ENTRYPOINT /bin/bash
-
-EXPOSE 3306
-CMD ["/root/mariadb.sh"] 
+#RUN /root/mariadb.sh
+CMD ["/usr/sbin/init"]
+#ENTRYPOINT /root/mariadb.sh && /bin/bash
