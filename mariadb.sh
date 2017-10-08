@@ -1,4 +1,9 @@
 #!/bin/sh
+ipAddress=$1
+user=$2
+pass=$3
+mail=$4
+
 chown -R mysql:mysql /var/lib/mysql
 mysql_install_db --user mysql > /dev/null &
 sleep 10s
@@ -45,7 +50,7 @@ wp --path=/var/www/html/wordpress
 
 echo "make wp-config.php"
 wp core config --dbname="wordpress" --dbuser="wordpressuser" --dbpass="password" --path="/var/www/html/wordpress"
-wp core install --url="http://localhost/wordpress" --title="Docker Wordpress" --admin_user="miloud" --admin_password="annaba" --admin_email="miloud.saihia@gmail.com" --path="/var/www/html/wordpress"
+wp core install --url="http://$ipAddress/wordpress" --title="Docker Wordpress" --admin_user="$user" --admin_password="$pass" --admin_email="$mail" --path="/var/www/html/wordpress"
 #wp core config --dbname=wordpress --dbuser=root --dbpass=root && currentdirectory=${PWD##*/} && password="Annaba00" && wp db create
 
 echo "make install"
