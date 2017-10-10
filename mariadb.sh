@@ -50,7 +50,10 @@ wp --path=/var/www/html/wordpress
 
 echo "make wp-config.php"
 wp core config --dbname="wordpress" --dbuser="wordpressuser" --dbpass="password" --path="/var/www/html/wordpress"
-wp core install --url="http://$ipAddress/wordpress" --title="Docker Wordpress" --admin_user="$user" --admin_password="$pass" --admin_email="$mail" --path="/var/www/html/wordpress"
+wp core install --url="http://$ipAddress/wordpress" --title="Docker Wordpress" --admin_user=$user --admin_password=$pass --admin_email=$mail --path="/var/www/html/wordpress"
+
+#echo "wp core install --url="http://$ipAddress/wordpress" --title="Docker Wordpress" --admin_user=$user --admin_password=$pass --admin_email=$mail --path="/var/www/html/wordpress""
+
 #wp core config --dbname=wordpress --dbuser=root --dbpass=root && currentdirectory=${PWD##*/} && password="Annaba00" && wp db create
 
 echo "make install"
